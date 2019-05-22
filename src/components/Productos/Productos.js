@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Modal from "./Modal/Modal";
 
 export class Productos extends Component {
   state = {
@@ -39,17 +40,31 @@ export class Productos extends Component {
       });
     }
     return (
-      <table className="table">
-        <thead className="thead-dark">
-          <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Marca</th>
-            <th scope="col">Código</th>
-            <th scope="col">Precio</th>
-          </tr>
-        </thead>
-        {productos}
-      </table>
+      <div>
+        <div className="d-flex justify-content-between mb-3">
+          <h2>Lista de productos</h2>
+          <button
+            type="button"
+            className="btn btn-dark"
+            data-toggle="modal"
+            data-target=".bd-example-modal-lg"
+          >
+            Agregar producto
+          </button>
+          <Modal />
+        </div>
+        <table className="table">
+          <thead className="thead-dark">
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Código</th>
+              <th scope="col">Precio</th>
+            </tr>
+          </thead>
+          {productos}
+        </table>
+      </div>
     );
   }
 }

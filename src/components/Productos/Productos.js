@@ -17,6 +17,11 @@ export class Productos extends Component {
         this.setState({ error: true });
       });
   }
+
+  eliminarProducto(id) {
+    console.log("Se eliminó el producto con id: " + id);
+  };
+
   render() {
     let productos = this.state.error ? (
       <p>Error al traer los productos</p>
@@ -34,8 +39,24 @@ export class Productos extends Component {
               <td>{producto.marca}</td>
               <td>{producto.codigoBarras}</td>
               <td>${producto.precio}</td>
-              <td><button className="btn btn-dark" style={{background: "#001932"}}>Editar</button></td>
-              <td><button className="btn btn-dark" style={{background: "#001932"}}>Eliminar</button></td>
+              {/* Para editar seguro se necesite un <Link> */}
+              <td>
+                <button
+                  className="btn btn-dark"
+                  style={{ background: "#001932" }}
+                >
+                  Editar
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-dark"
+                  style={{ background: "#001932" }}
+                  onClick={this.eliminarProducto.bind(this, index)}
+                >
+                  Eliminar
+                </button>
+              </td>
             </tr>
           </tbody>
         );
@@ -56,14 +77,14 @@ export class Productos extends Component {
           <Modal />
         </div>
         <table className="table">
-          <thead style={{backgroundColor: "#001932", color: "#fff"}}>
+          <thead style={{ backgroundColor: "#001932", color: "#fff" }}>
             <tr>
               <th scope="col">Nombre</th>
               <th scope="col">Marca</th>
               <th scope="col">Código</th>
               <th scope="col">Precio</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
+              <th scope="col" />
+              <th scope="col" />
             </tr>
           </thead>
           {productos}

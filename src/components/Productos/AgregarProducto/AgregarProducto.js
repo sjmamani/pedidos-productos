@@ -87,6 +87,7 @@ export class AgregarProducto extends Component {
               className="form-control"
               id="precio"
               placeholder="Precio"
+              min="0"
             />
           </div>
         </div>

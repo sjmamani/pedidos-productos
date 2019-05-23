@@ -34,6 +34,8 @@ export class Productos extends Component {
               <td>{producto.marca}</td>
               <td>{producto.codigoBarras}</td>
               <td>${producto.precio}</td>
+              <td><button className="btn btn-dark" style={{background: "#001932"}}>Editar</button></td>
+              <td><button className="btn btn-dark" style={{background: "#001932"}}>Eliminar</button></td>
             </tr>
           </tbody>
         );
@@ -45,7 +47,7 @@ export class Productos extends Component {
           <h2>Lista de productos</h2>
           <button
             type="button"
-            className="btn btn-dark"
+            className="btn btn-outline-dark"
             data-toggle="modal"
             data-target=".bd-example-modal-lg"
           >
@@ -54,12 +56,14 @@ export class Productos extends Component {
           <Modal />
         </div>
         <table className="table">
-          <thead className="thead-dark">
+          <thead style={{backgroundColor: "#001932", color: "#fff"}}>
             <tr>
               <th scope="col">Nombre</th>
               <th scope="col">Marca</th>
               <th scope="col">Código</th>
               <th scope="col">Precio</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
           </thead>
           {productos}

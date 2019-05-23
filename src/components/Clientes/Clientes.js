@@ -39,7 +39,7 @@ class Clientes extends Component {
     }
     return (
       <table className="table">
-        <thead className="thead-dark">
+        <thead style={{backgroundColor: "#001932", color: "#fff"}}>
           <tr>
             <th scope="col">Nro. Cliente</th>
             <th scope="col">Nombre</th>

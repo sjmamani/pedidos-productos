@@ -2,6 +2,9 @@ import React from "react";
 import AgregarProducto from "../AgregarProducto/AgregarProducto";
 
 const Modal = () => {
+  const agregarProducto = () => {
+    console.log("Agregado");
+  };
   return (
     <div
       className="modal fade bd-example-modal-lg"
@@ -24,7 +27,7 @@ const Modal = () => {
             >
               Cancelar
             </button>
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-primary" onClick={agregarProducto}>
               Crear
             </button>
           </div>

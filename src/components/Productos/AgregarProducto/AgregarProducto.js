@@ -38,6 +38,16 @@ export class AgregarProducto extends Component {
         );
       });
     }
+    let subRubros = this.state.subRubros ? null : <option>Cargando...</option>;
+    if (this.state.subRubros) {
+      subRubros = this.state.subRubros.map(subRubro => {
+        return (
+          <option key={subRubro.codigo} value={subRubro.codigo}>
+            {subRubro.descripcion}
+          </option>
+        );
+      });
+    }
     return (
       <form>
         <div className="form-group row">
@@ -92,6 +102,7 @@ export class AgregarProducto extends Component {
             <label>Subrubro</label>
             <select className="custom-select">
               <option selected>Seleccionar Subrubro</option>
+              {subRubros}
             </select>
           </div>
         </div>

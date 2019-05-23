@@ -1,11 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import "./Navbar.css";
 
 const Navbar = props => {
   return (
     <nav
       className="navbar navbar-expand-lg navbar-dark shadow"
-      style={{ backgroundColor: "#001932" }}
+      style={{backgroundColor: "#001932"}}
     >
       <div className="navbar-brand" href="#">
         LOGO
@@ -25,17 +26,35 @@ const Navbar = props => {
         <ul className="navbar-nav">
           <li className="nav-item">
             <div className="nav-link">
-              <Link to="/productos">Productos</Link>
+              <NavLink
+                to="/"
+                exact
+                activeStyle={{ color: "#fff", fontWeight: "bold" }}
+              >
+                Productos
+              </NavLink>
             </div>
           </li>
           <li className="nav-item">
             <div className="nav-link">
-              <Link to="/pedidos">Pedidos</Link>
+              <NavLink
+                to="/pedidos"
+                exact
+                activeStyle={{ color: "#fff", fontWeight: "bold" }}
+              >
+                Pedidos
+              </NavLink>
             </div>
           </li>
           <li className="nav-item">
             <div className="nav-link">
-              <Link to="/clientes">Clientes</Link>
+              <NavLink
+                to="/clientes"
+                exact
+                activeStyle={{ color: "#fff", fontWeight: "bold" }}
+              >
+                Clientes
+              </NavLink>
             </div>
           </li>
         </ul>

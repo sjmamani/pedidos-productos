@@ -13,7 +13,7 @@ function App() {
       <Router>
         <Navbar />
         <div className="container mt-3">
-          <Route exact path="/" component={Clientes} />
+          <Route exact path="/" component={Productos} />
           <Route path="/productos" component={Productos} />
           <Route path="/productos/:id" component={Producto} />
           <Route path="/pedidos" component={Pedidos} />

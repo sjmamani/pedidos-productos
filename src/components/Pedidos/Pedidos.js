@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./Pedidos.css";
 import axios from "axios";
 import Tabla from "../UI/Tabla/Tabla";
 import AgregarPedido from "./AgregarPedido/AgregarPedido";
@@ -25,12 +26,23 @@ export class Pedidos extends Component {
         console.log(error);
       });
   }
+
   agregarPedido = pedido => {
     console.log("Se agrega a la tabla: ", pedido);
     const pedidos = [...this.state.pedidos];
     pedidos.push(pedido);
-    this.setState({pedidos: pedidos})
+    this.setState({ pedidos: pedidos });
   };
+
+  verDetalle(pedido) {
+    console.log(pedido);
+    const detalle = {...pedido};
+    this.props.history.push({
+      pathname: '/pedido/' + pedido.numeroPedido,
+      state: { detalle: detalle }
+    });
+  }
+
   render() {
     let pedidos = this.state.error ? (
       <p>Error al traer los pedidos</p>
@@ -42,9 +54,12 @@ export class Pedidos extends Component {
     if (this.state.pedidos) {
       pedidos = this.state.pedidos.map(pedido => {
         return (
-          <tbody key={pedido.numeroPedido}>
+          <tbody
+            key={pedido.numeroPedido}
+            onClick={() => this.verDetalle(pedido)}
+          >
             <tr>
-              <th scope="row">{pedido.numeroPedido}</th>
+              <td>{pedido.numeroPedido}</td>
               <td>{pedido.cliente.nombre}</td>
               <td>{pedido.estado}</td>
               <td>{pedido.fechaPedido}</td>

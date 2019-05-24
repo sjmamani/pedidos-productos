@@ -6,6 +6,7 @@ import Clientes from "./components/Clientes/Clientes";
 import Productos from "./components/Productos/Productos";
 import Producto from "./components/Productos/Producto/Producto";
 import Pedidos from "./components/Pedidos/Pedidos";
+import Pedido from "./components/Pedidos/Pedido/Pedido";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/productos" component={Productos} />
           <Route path="/productos/:id" component={Producto} />
           <Route path="/pedidos" component={Pedidos} />
+          <Route path="/pedido/:id" component={Pedido} />
           <Route path="/clientes" component={Clientes} />
         </div>
       </Router>

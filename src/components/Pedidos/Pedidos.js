@@ -8,16 +8,50 @@ export class Pedidos extends Component {
       pedido: null,
       error: false,
       cuit: "",
-      loading: false
+      loading: false,
+      pedidos: []
     };
 
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    axios
+      .get("http://localhost:8080/pedidos")
+      .then(response => {
+        this.setState({ pedidos: response.data });
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   handleChange(event) {
     this.setState({ cuit: event.target.value });
   }
   render() {
+    let pedidos1 = this.state.error ? (
+      <p>Error al traer los pedidos</p>
+    ) : (
+      <div className="spinner-border" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    );
+    if (this.state.pedidos) {
+      pedidos1 = this.state.pedidos.map(pedido => {
+        return (
+          <tbody key={pedido.numeroPedido}>
+            <tr>
+              <th scope="row">{pedido.numeroPedido}</th>
+              <td>{pedido.cliente.nombre}</td>
+              <td>{pedido.estado}</td>
+              <td>{pedido.fechaPedido}</td>
+            </tr>
+          </tbody>
+        );
+      });
+    }
     const buscarPedido = () => {
       this.setState({ loading: true });
       axios
@@ -113,19 +147,32 @@ export class Pedidos extends Component {
             </div>
           </div>
           <div className="form-group row">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={buscarPedido}
-            >
-              Buscar
-            </button>
+            <div className="col-6">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={buscarPedido}
+              >
+                Buscar
+              </button>
+            </div>
           </div>
         </form>
         <div>
           {pedido}
           {items}
         </div>
+        <table className="table">
+          <thead style={{ backgroundColor: "#001932", color: "#fff" }}>
+            <tr>
+              <th scope="col">Nro. Pedido</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Fecha</th>
+            </tr>
+          </thead>
+          {pedidos1}
+        </table>
       </div>
     );
   }

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Modal from "./Modal/Modal";
+import AgregarProducto from "./AgregarProducto/AgregarProducto";
+import Tabla from "../UI/Tabla/Tabla";
+
+const HEADERS = ["Nombre", "Marca", "Código", "Precio", "", ""];
 
 export class Productos extends Component {
   state = {
@@ -20,7 +23,7 @@ export class Productos extends Component {
 
   eliminarProducto(id) {
     console.log("Se eliminó el producto con id: " + id);
-  };
+  }
 
   render() {
     let productos = this.state.error ? (
@@ -74,21 +77,9 @@ export class Productos extends Component {
           >
             Agregar producto
           </button>
-          <Modal />
+          <AgregarProducto />
         </div>
-        <table className="table">
-          <thead style={{ backgroundColor: "#001932", color: "#fff" }}>
-            <tr>
-              <th scope="col">Nombre</th>
-              <th scope="col">Marca</th>
-              <th scope="col">Código</th>
-              <th scope="col">Precio</th>
-              <th scope="col" />
-              <th scope="col" />
-            </tr>
-          </thead>
-          {productos}
-        </table>
+        <Tabla headers={HEADERS} contenido={productos} />
       </div>
     );
   }

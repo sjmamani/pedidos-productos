@@ -32,6 +32,7 @@ class AgregarPedido extends Component {
   };
 
   agregarEnTabla(pedido) {
+    this.setState({cuit: ""});
     this.props.push(pedido);
   }
   render() {
@@ -54,6 +55,7 @@ class AgregarPedido extends Component {
                     className="form-control"
                     placeholder="Ingresar CUIT del cliente"
                     type="text"
+                    value={this.state.cuit}
                     onChange={this.setCuitHandler}
                   />
                 </div>
@@ -70,6 +72,7 @@ class AgregarPedido extends Component {
               <button
                 type="button"
                 className="btn btn-primary"
+                data-dismiss="modal"
                 onClick={this.agregarPedido}
               >
                 Crear

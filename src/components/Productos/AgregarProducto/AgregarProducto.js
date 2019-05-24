@@ -107,14 +107,14 @@ class AgregarProducto extends Component {
                   <div className="col-6">
                     <label>Rubro</label>
                     <select className="custom-select">
-                      <option selected>Seleccionar Rubro</option>
+                      <option defaultValue>Seleccionar Rubro</option>
                       {rubros}
                     </select>
                   </div>
                   <div className="col-6">
                     <label>Subrubro</label>
                     <select className="custom-select">
-                      <option selected>Seleccionar Subrubro</option>
+                      <option defaultValue>Seleccionar Subrubro</option>
                       {subRubros}
                     </select>
                   </div>
@@ -132,6 +132,7 @@ class AgregarProducto extends Component {
               <button
                 type="button"
                 className="btn btn-primary"
+                data-dismiss="modal"
                 onClick={this.agregarProducto}
               >
                 Crear

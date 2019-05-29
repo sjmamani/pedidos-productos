@@ -4,13 +4,12 @@ import axios from "axios";
 
 class Pedido extends Component {
   state = {
-    items: null,
-    numeroPedido: this.props.match.params.id
+    items: null
   };
 
-  eliminarPedido() {
+  eliminarPedido(numeroPedido) {
     axios
-      .delete(`http://localhost:8080/pedido/${this.state.numeroPedido}`)
+      .delete(`http://localhost:8080/pedido/${numeroPedido}`)
       .then(response => {
         console.log(response);
         this.props.history.push({
@@ -21,7 +20,7 @@ class Pedido extends Component {
   }
 
   render() {
-    console.log(this.props.location.state, this.props.match.params.id);
+    // console.log(this.props.location.state, this.props.match.params.id);
     let facturar = null;
     if (this.props.location.state.detalle.estado === "pendiente") {
       facturar = (
@@ -57,7 +56,7 @@ class Pedido extends Component {
           <h3 className="mr-auto p-2">Detalle pedido</h3>
           <button
             className="btn btn-outline-danger align-self-center mr-2"
-            onClick={this.eliminarPedido}
+            onClick={() => this.eliminarPedido(this.props.match.params.id)}
           >
             Eliminar
           </button>

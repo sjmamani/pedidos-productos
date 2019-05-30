@@ -57,6 +57,17 @@ const Navbar = props => {
               </NavLink>
             </div>
           </li>
+          <li className="nav-item">
+            <div className="nav-link">
+              <NavLink
+                to="/login"
+                exact
+                activeStyle={{ color: "#fff", fontWeight: "bold" }}
+              >
+                Login
+              </NavLink>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>

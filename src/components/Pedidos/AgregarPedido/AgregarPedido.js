@@ -27,6 +27,7 @@ class AgregarPedido extends Component {
       })
       .catch(error => {
         console.log(error);
+        alert("No existe cliente para el CUIT ingresado.")
         this.setState({ error: true });
       });
   };

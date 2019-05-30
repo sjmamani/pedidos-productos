@@ -19,8 +19,12 @@ export class Pedidos extends Component {
     axios
       .get("http://localhost:8080/pedidos")
       .then(response => {
-        this.setState({ pedidos: response.data });
-        // console.log(response);
+        this.setState({
+          pedidos: response.data.sort((a, b) => {
+            return a.numeroPedido - b.numeroPedido
+          })
+        });
+        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -36,9 +40,9 @@ export class Pedidos extends Component {
 
   verDetalle(pedido) {
     console.log(pedido);
-    const detalle = {...pedido};
+    const detalle = { ...pedido };
     this.props.history.push({
-      pathname: '/pedido/' + pedido.numeroPedido,
+      pathname: "/pedido/" + pedido.numeroPedido,
       state: { detalle: detalle }
     });
   }

@@ -34,9 +34,9 @@ export class Productos extends Component {
       </div>
     );
     if (this.state.productos) {
-      productos = this.state.productos.map((producto, index) => {
+      productos = this.state.productos.map(producto => {
         return (
-          <tbody key={index}>
+          <tbody key={producto.identificador}>
             <tr>
               <td>{producto.nombre}</td>
               <td>{producto.marca}</td>
@@ -55,7 +55,7 @@ export class Productos extends Component {
                 <button
                   className="btn btn-dark"
                   style={{ background: "#001932" }}
-                  onClick={this.eliminarProducto.bind(this, index)}
+                  onClick={this.eliminarProducto.bind(this, producto.identificador)}
                 >
                   Eliminar
                 </button>

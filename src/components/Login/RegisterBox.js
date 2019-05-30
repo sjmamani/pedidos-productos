@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 class RegisterBox extends React.Component {
 
     constructor(props) {
@@ -7,7 +7,7 @@ class RegisterBox extends React.Component {
       this.state = {
         username: "",
         password: "",
-        errors: [],
+        errors:[],
         pwdState: null
       };
     }
@@ -23,6 +23,9 @@ class RegisterBox extends React.Component {
       }));
     }
   
+    /**
+     * Si hay un error, se borrara cuando ingrese algo
+     */
     clearValidationErr(elm) {
       this.setState((prevState) => {
         let newArr = [];
@@ -35,11 +38,13 @@ class RegisterBox extends React.Component {
       });
     }
   
+    /**Evento username */
     onUsernameChange(e) {
       this.setState({username: e.target.value});
       this.clearValidationErr("username");
     }
   
+    /**Evento password */
     onPasswordChange(e) {
       this.setState({password: e.target.value});
       this.clearValidationErr("password");
@@ -53,10 +58,12 @@ class RegisterBox extends React.Component {
   
     }
   
+    /**Flag de si se registro correctamente o hubo un fallo */
     openPopup(e) {
-      console.log("Hello world!");
+      alert("Que ace? " + this.state.username + " " + this.state.password );
     }
   
+    /**Evento boton registrar */
     submitRegister(e) {
   
       console.log(this.state);
@@ -68,10 +75,35 @@ class RegisterBox extends React.Component {
         this.showValidationErr("password", "Password Cannot be empty!");
       }
   
+      /*Api call*/
+      this.registrar();
     }
+
+    registrar(){
+      var  headers = {
+        'Content-Type': 'application/json'
+      }
+      var body = {
+        'username' : this.state.username,
+        'password' : this.state.password
+      }
+      console.log(body);
+      
+      axios
+          .post("http://localhost:8080/registrar/",body,{headers})
+          .then(response => {
+            this.setState({ registro: response.data, loading: false });
+            console.log(response.data);
+            alert(response.data);
+          })
+          .catch(error => {
+            this.setState({ error: true, loading: false });
+            console.log(error);
+          });
+    }
+     
   
     render() {
-  
       let usernameErr = null,
         passwordErr = null;
   
@@ -157,7 +189,7 @@ class RegisterBox extends React.Component {
               className="login-btn"
               
               onClick={this
-              .openPopup
+              .submitRegister
               .bind(this)}>Register</button>
   
           </div>

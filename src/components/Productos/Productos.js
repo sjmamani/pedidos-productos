@@ -12,7 +12,13 @@ export class Productos extends Component {
     rubros: [],
     subRubros: [],
     error: false,
-    modal: false
+    modal: false,
+    nombre: "",
+    marca: "",
+    codigoBarras: "",
+    precio: 0,
+    codigoRubro: 0,
+    codigoSubRubro: 0
   };
   componentDidMount() {
     axios
@@ -42,7 +48,17 @@ export class Productos extends Component {
   }
 
   eliminarProducto(id) {
-    console.log("Se eliminó el producto con id: " + id);
+    const producto = { identificador: id };
+    console.log(producto);
+    axios
+      .delete("http://localhost:8080/producto", producto)
+      .then(response => {
+        console.log(response);
+        alert("Se ha eliminado el producto");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   verDetalle(producto) {
@@ -57,6 +73,36 @@ export class Productos extends Component {
     productos.push(producto);
     this.setState({ productos: productos });
   };
+
+  editarProducto = () => {
+    const producto = {
+      rubro: {
+        codigo: this.state.codigoRubro,
+        descripcion: "",
+        habilitado: true
+      },
+      subRubro: {
+        codigo: this.state.codigoSubRubro,
+        descripcion: "",
+        rubro: {
+          codigo: this.state.codigoRubro,
+          descripcion: "",
+          habilitado: true
+        }
+      },
+      nombre: this.state.nombre,
+      marca: this.state.marca,
+      codigoBarras: this.state.codigoBarras,
+      precio: this.state.precio
+    }
+    console.log(producto);
+    // axios.put("http://localhost:8080/producto", producto)
+    // .then(response => {
+    //   console.log(response);
+    //   // this.agregarEnTabla(response.data);
+    // })
+    // .catch(error => console.log(error));
+  }
 
   render() {
     let productos = this.state.error ? (
@@ -125,8 +171,10 @@ export class Productos extends Component {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Nombre"
-                      value={this.state.producto.nombre}
+                      defaultValue={this.state.producto.nombre}
+                      onChange={event =>
+                        this.setState({ nombre: event.target.value })
+                      }
                     />
                   </div>
                   <div className="col-6">
@@ -135,7 +183,10 @@ export class Productos extends Component {
                       type="text"
                       className="form-control"
                       placeholder="Marca"
-                      value={this.state.producto.marca}
+                      defaultValue={this.state.producto.marca}
+                      onChange={event =>
+                        this.setState({ marca: event.target.value })
+                      }
                     />
                   </div>
                 </div>
@@ -146,7 +197,10 @@ export class Productos extends Component {
                       type="text"
                       className="form-control"
                       placeholder="Código de Barras"
-                      value={this.state.producto.codigoBarras}
+                      defaultValue={this.state.producto.codigoBarras}
+                      onChange={event =>
+                        this.setState({ codigoBarras: event.target.value })
+                      }
                     />
                   </div>
                   <div className="col-2">
@@ -154,7 +208,10 @@ export class Productos extends Component {
                     <input
                       type="number"
                       className="form-control"
-                      value={this.state.producto.precio}
+                      defaultValue={this.state.producto.precio}
+                      onChange={event =>
+                        this.setState({ precio: event.target.value })
+                      }
                       placeholder="Precio"
                       min="0"
                     />
@@ -163,7 +220,13 @@ export class Productos extends Component {
                 <div className="form-group row">
                   <div className="col-6">
                     <label>Rubro</label>
-                    <select className="custom-select">
+                    <select
+                      className="custom-select"
+                      onChange={event =>
+                        this.setState({ codigoRubro: event.target.value })
+                      }
+                    >
+                      >
                       <option defaultValue>
                         {this.state.producto.rubro.descripcion}
                       </option>
@@ -172,7 +235,13 @@ export class Productos extends Component {
                   </div>
                   <div className="col-6">
                     <label>Subrubro</label>
-                    <select className="custom-select">
+                    <select
+                      className="custom-select"
+                      onChange={event =>
+                        this.setState({ codigoSubRubro: event.target.value })
+                      }
+                    >
+                      >>
                       <option defaultValue>
                         {this.state.producto.subRubro.descripcion}
                       </option>
@@ -187,10 +256,18 @@ export class Productos extends Component {
                 type="button"
                 className="btn btn-danger"
                 data-dismiss="modal"
+                onClick={() =>
+                  this.eliminarProducto(this.state.producto.identificador)
+                }
               >
                 Eliminar
               </button>
-              <button type="button" className="btn btn-success">
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-dismiss="modal"
+                onClick={this.editarProducto}
+              >
                 Editar
               </button>
             </div>
@@ -211,7 +288,7 @@ export class Productos extends Component {
           >
             Agregar producto
           </button>
-          <AgregarProducto push={this.agregarProducto}/>
+          <AgregarProducto push={this.agregarProducto} />
         </div>
         <Tabla headers={HEADERS} contenido={productos} />
         {modal}

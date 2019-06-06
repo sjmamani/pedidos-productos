@@ -41,7 +41,7 @@ class AgregarProducto extends Component {
     const producto = {
       rubro: {
         codigo: this.state.codigoRubro,
-        descripcion: "a",
+        descripcion: "",
         habilitado: true
       },
       subRubro: {
@@ -70,6 +70,7 @@ class AgregarProducto extends Component {
   agregarEnTabla(producto) {
     this.setState({nombre: "", marca: "", codigoBarras: "", precio: 0, codigoSubRubro: 0, codigoRubro: 0});
     this.props.push(producto);
+    alert("Producto agregado con éxito");
   }
 
   render() {

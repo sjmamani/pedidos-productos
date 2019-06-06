@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { PasswordForm } from "./PasswordForm";
 import './Form.css' 
-import ReactDOM from 'react-dom';
 
 class CambioPassword extends React.Component {
     

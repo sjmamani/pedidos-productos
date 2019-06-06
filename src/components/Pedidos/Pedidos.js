@@ -10,8 +10,8 @@ export class Pedidos extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false,
-      pedidos: []
+      pedidos: [],
+      error: false
     };
     // this.handleChange = this.handleChange.bind(this);
   }

@@ -2,11 +2,22 @@ import React, { Component } from "react";
 import axios from "axios";
 
 class AgregarProducto extends Component {
-  state = {
-    rubros: null,
-    subRubros: null,
-    error: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      rubros: null,
+      subRubros: null,
+      error: false,
+      nombre: "",
+      marca: "",
+      codigoBarras: "",
+      precio: 0,
+      codigoRubro: 0,
+      codigoSubRubro: 0
+    };
+  }
+  // this.setNombreHandler = this.setNombreHandler.bind(this);
+
   componentDidMount() {
     axios
       .get("http://localhost:8080/rubros")
@@ -25,9 +36,42 @@ class AgregarProducto extends Component {
         this.setState({ error: true });
       });
   }
+
   agregarProducto = () => {
-    console.log("Agregado");
+    const producto = {
+      rubro: {
+        codigo: this.state.codigoRubro,
+        descripcion: "a",
+        habilitado: true
+      },
+      subRubro: {
+        codigo: this.state.codigoSubRubro,
+        descripcion: "",
+        rubro: {
+          codigo: this.state.codigoRubro,
+          descripcion: "",
+          habilitado: true
+        }
+      },
+      nombre: this.state.nombre,
+      marca: this.state.marca,
+      codigoBarras: this.state.codigoBarras,
+      precio: this.state.precio
+    }
+    console.log(producto);
+    axios.post("http://localhost:8080/producto", producto)
+    .then(response => {
+      console.log(response);
+      this.agregarEnTabla(response.data);
+    })
+    .catch(error => console.log(error));
   };
+
+  agregarEnTabla(producto) {
+    this.setState({nombre: "", marca: "", codigoBarras: "", precio: 0, codigoSubRubro: 0, codigoRubro: 0});
+    this.props.push(producto);
+  }
+
   render() {
     let rubros = this.state.rubros ? null : <option>Cargando...</option>;
     if (this.state.rubros) {
@@ -68,8 +112,9 @@ class AgregarProducto extends Component {
                     <input
                       type="text"
                       className="form-control"
-                      id="nombre"
                       placeholder="Nombre"
+                      value={this.state.nombre}
+                      onChange={event => this.setState({ nombre: event.target.value})}
                     />
                   </div>
                   <div className="col-6">
@@ -77,7 +122,8 @@ class AgregarProducto extends Component {
                     <input
                       type="text"
                       className="form-control"
-                      id="marca"
+                      value={this.state.marca}
+                      onChange={event => this.setState({ marca: event.target.value})}
                       placeholder="Marca"
                     />
                   </div>
@@ -88,7 +134,8 @@ class AgregarProducto extends Component {
                     <input
                       type="text"
                       className="form-control"
-                      id="codigoBarras"
+                      value={this.state.codigoBarras}
+                      onChange={event => this.setState({ codigoBarras: event.target.value})}
                       placeholder="Código de Barras"
                     />
                   </div>
@@ -97,7 +144,8 @@ class AgregarProducto extends Component {
                     <input
                       type="number"
                       className="form-control"
-                      id="precio"
+                      value={this.state.precio}
+                      onChange={event => this.setState({ precio: event.target.value})}
                       placeholder="Precio"
                       min="0"
                     />
@@ -106,14 +154,16 @@ class AgregarProducto extends Component {
                 <div className="form-group row">
                   <div className="col-6">
                     <label>Rubro</label>
-                    <select className="custom-select">
+                    <select className="custom-select"
+                      onChange={event => this.setState({ codigoRubro: event.target.value})}>
                       <option defaultValue>Seleccionar Rubro</option>
                       {rubros}
                     </select>
                   </div>
                   <div className="col-6">
                     <label>Subrubro</label>
-                    <select className="custom-select">
+                    <select className="custom-select"
+                    onChange={event => this.setState({ codigoSubRubro: event.target.value})}>>
                       <option defaultValue>Seleccionar Subrubro</option>
                       {subRubros}
                     </select>

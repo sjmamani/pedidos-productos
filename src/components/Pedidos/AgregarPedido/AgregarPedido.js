@@ -9,7 +9,6 @@ class AgregarPedido extends Component {
       resultado: null,
       error: false
     };
-
     this.setCuitHandler = this.setCuitHandler.bind(this);
   }
 

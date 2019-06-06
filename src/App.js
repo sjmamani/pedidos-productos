@@ -7,6 +7,8 @@ import Productos from "./components/Productos/Productos";
 import Producto from "./components/Productos/Producto/Producto";
 import Pedidos from "./components/Pedidos/Pedidos";
 import Pedido from "./components/Pedidos/Pedido/Pedido";
+import CambioPassword from "./components/Login/CambioPassword/CambioPassword";
+import HomeLogin from "./components/Login/HomeLogin";
 
 function App() {
   return (
@@ -14,12 +16,13 @@ function App() {
       <Router>
         <Navbar />
         <div className="container mt-3">
-          <Route exact path="/" component={Productos} />
+          <Route exact path="/" component={HomeLogin} />
           <Route path="/productos" component={Productos} />
           <Route path="/productos/:id" component={Producto} />
           <Route path="/pedidos" component={Pedidos} />
           <Route path="/pedido/:id" component={Pedido} />
           <Route path="/clientes" component={Clientes} />
+          <Route path="/cambioPassword" component={CambioPassword} />
         </div>
       </Router>
     </div>

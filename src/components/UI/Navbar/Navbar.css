@@ -1,4 +1,4 @@
-a, a:hover {
+.nav-link a, .nav-link a:hover {
     text-decoration: none;
     color: white;
 }

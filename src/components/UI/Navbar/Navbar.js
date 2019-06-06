@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
+
+
 const Navbar = props => {
   return (
     <nav
@@ -26,8 +28,8 @@ const Navbar = props => {
         <ul className="navbar-nav">
           <li className="nav-item">
             <div className="nav-link">
-              <NavLink
-                to="/"
+              <NavLink 
+                to="/productos"
                 exact
                 activeStyle={{ color: "#fff", fontWeight: "bold" }}
               >
@@ -37,7 +39,7 @@ const Navbar = props => {
           </li>
           <li className="nav-item">
             <div className="nav-link">
-              <NavLink
+              <NavLink 
                 to="/pedidos"
                 exact
                 activeStyle={{ color: "#fff", fontWeight: "bold" }}
@@ -48,12 +50,23 @@ const Navbar = props => {
           </li>
           <li className="nav-item">
             <div className="nav-link">
-              <NavLink
+              <NavLink 
                 to="/clientes"
                 exact
                 activeStyle={{ color: "#fff", fontWeight: "bold" }}
               >
                 Clientes
+              </NavLink>
+            </div>
+          </li>
+          <li className="nav-item">
+            <div className="nav-link">
+              <NavLink 
+                to="/"
+                exact
+                activeStyle={{ color: "#fff", fontWeight: "bold" }}
+              >
+                Logout
               </NavLink>
             </div>
           </li>

@@ -58,11 +58,6 @@ class RegisterBox extends React.Component {
   
     }
   
-    /**Flag de si se registro correctamente o hubo un fallo */
-    openPopup(e) {
-      alert("Que ace? " + this.state.username + " " + this.state.password );
-    }
-  
     /**Evento boton registrar */
     submitRegister(e) {
   
@@ -96,7 +91,7 @@ class RegisterBox extends React.Component {
           .then(response => {
             this.setState({ registro: response.data, loading: false });
             console.log(response.data);
-            alert(response.data);
+            alert("Se ha registrado el usuario");
           })
           .catch(error => {
             this.setState({ error: true, loading: false });

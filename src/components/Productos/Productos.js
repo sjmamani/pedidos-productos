@@ -9,10 +9,12 @@ export class Productos extends Component {
   state = {
     productos: [],
     producto: {},
+    productoAModificar: {},
     rubros: [],
     subRubros: [],
     error: false,
     modal: false,
+    identificador: 0,
     nombre: "",
     marca: "",
     codigoBarras: "",
@@ -48,7 +50,7 @@ export class Productos extends Component {
   }
 
   eliminarProducto(id) {
-    const producto = { identificador: id };
+    const producto = { identificador: id};
     console.log(producto);
     axios
       .delete("http://localhost:8080/producto", producto)
@@ -62,9 +64,19 @@ export class Productos extends Component {
   }
 
   verDetalle(producto) {
-    console.log(producto);
+    console.log("producto del state", producto);
     const p = { ...producto };
-    this.setState({ producto: p, modal: true });
+    this.setState({
+      producto: p,
+      identificador: p.identificador,
+      nombre: p.nombre,
+      marca: p.marca,
+      codigoBarras: p.codigoBarras,
+      precio: p.precio,
+      codigoRubro: p.rubro.codigo,
+      codigoSubRubro: p.subRubro.codigo,
+      modal: true
+    });
   }
 
   agregarProducto = producto => {
@@ -75,7 +87,16 @@ export class Productos extends Component {
   };
 
   editarProducto = () => {
+    let p = { ...this.state.productoAModificar };
+    p.identificador = this.state.identificador;
+    p.nombre = this.state.nombre;
+    p.marca = this.state.marca;
+    p.codigoBarras = this.state.codigoBarras;
+    p.precio = this.state.precio;
+    p.codigoRubro = this.state.codigoRubro;
+    p.codigoSubRubro = this.state.codigoSubRubro;
     const producto = {
+      identificador: p.identificador,
       rubro: {
         codigo: this.state.codigoRubro,
         descripcion: "",
@@ -90,19 +111,19 @@ export class Productos extends Component {
           habilitado: true
         }
       },
-      nombre: this.state.nombre,
-      marca: this.state.marca,
-      codigoBarras: this.state.codigoBarras,
-      precio: this.state.precio
-    }
-    console.log(producto);
-    // axios.put("http://localhost:8080/producto", producto)
-    // .then(response => {
-    //   console.log(response);
-    //   // this.agregarEnTabla(response.data);
-    // })
-    // .catch(error => console.log(error));
-  }
+      nombre: p.nombre,
+      marca: p.marca,
+      codigoBarras: p.codigoBarras,
+      precio: p.precio
+    };
+    console.log("producto a editar", producto);
+    axios
+      .put("http://localhost:8080/producto", p)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => console.log(error));
+  };
 
   render() {
     let productos = this.state.error ? (
@@ -171,7 +192,8 @@ export class Productos extends Component {
                     <input
                       type="text"
                       className="form-control"
-                      defaultValue={this.state.producto.nombre}
+                      id="nombre"
+                      value={this.state.nombre}
                       onChange={event =>
                         this.setState({ nombre: event.target.value })
                       }
@@ -183,7 +205,7 @@ export class Productos extends Component {
                       type="text"
                       className="form-control"
                       placeholder="Marca"
-                      defaultValue={this.state.producto.marca}
+                      value={this.state.marca}
                       onChange={event =>
                         this.setState({ marca: event.target.value })
                       }
@@ -197,7 +219,7 @@ export class Productos extends Component {
                       type="text"
                       className="form-control"
                       placeholder="Código de Barras"
-                      defaultValue={this.state.producto.codigoBarras}
+                      value={this.state.codigoBarras}
                       onChange={event =>
                         this.setState({ codigoBarras: event.target.value })
                       }
@@ -208,7 +230,7 @@ export class Productos extends Component {
                     <input
                       type="number"
                       className="form-control"
-                      defaultValue={this.state.producto.precio}
+                      value={this.state.precio}
                       onChange={event =>
                         this.setState({ precio: event.target.value })
                       }
@@ -226,7 +248,6 @@ export class Productos extends Component {
                         this.setState({ codigoRubro: event.target.value })
                       }
                     >
-                      >
                       <option defaultValue>
                         {this.state.producto.rubro.descripcion}
                       </option>
@@ -241,7 +262,6 @@ export class Productos extends Component {
                         this.setState({ codigoSubRubro: event.target.value })
                       }
                     >
-                      >>
                       <option defaultValue>
                         {this.state.producto.subRubro.descripcion}
                       </option>

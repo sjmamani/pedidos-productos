@@ -3,26 +3,32 @@ import axios from "axios";
 import AgregarProducto from "./AgregarProducto/AgregarProducto";
 import Tabla from "../UI/Tabla/Tabla";
 import Navbar from "../UI/Navbar/Navbar";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 const HEADERS = ["Nombre", "Marca", "Código", "Precio"];
 
 export class Productos extends Component {
-  state = {
-    productos: [],
-    producto: {},
-    productoAModificar: {},
-    rubros: [],
-    subRubros: [],
-    error: false,
-    modal: false,
-    identificador: 0,
-    nombre: "",
-    marca: "",
-    codigoBarras: "",
-    precio: 0,
-    codigoRubro: 0,
-    codigoSubRubro: 0
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      productos: [],
+      producto: {},
+      productoAModificar: {},
+      rubros: [],
+      subRubros: [],
+      error: false,
+      modal: false,
+      identificador: 0,
+      nombre: "",
+      marca: "",
+      codigoBarras: "",
+      precio: 0,
+      codigoRubro: 0,
+      codigoSubRubro: 0
+    };
+    this.notificationDOMRef = React.createRef();
+  }
   componentDidMount() {
     axios
       .get("http://localhost:8080/productos")
@@ -51,21 +57,45 @@ export class Productos extends Component {
   }
 
   eliminarProducto(id) {
-    const producto = { identificador: id };
-    console.log(producto);
     axios
-      .delete("http://localhost:8080/producto", producto)
+      .delete(`http://localhost:8080/producto/${id}`)
       .then(response => {
-        console.log(response);
-        alert("Se ha eliminado el producto");
+        let productos = [...this.state.productos];
+        // get index of object with the wished id
+        let removeIndex = productos
+          .map(producto => producto.identificador)
+          .indexOf(id);
+        // remove object
+        productos.splice(removeIndex, 1);
+        this.setState({ productos: productos });
+        this.notificationDOMRef.current.addNotification({
+          title: "Eliminado",
+          message: `${response.data}`,
+          type: "success",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "zoomIn"],
+          animationOut: ["animated", "zoomOut"],
+          dismiss: { duration: 2000 },
+          dismissable: { click: true }
+        });
       })
       .catch(error => {
-        console.log(error);
+        this.notificationDOMRef.current.addNotification({
+          title: "Error",
+          message: `${error.message}`,
+          type: "danger",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "zoomIn"],
+          animationOut: ["animated", "zoomOut"],
+          dismiss: { duration: 2000 },
+          dismissable: { click: true }
+        });
       });
   }
 
   verDetalle(producto) {
-    console.log("producto del state", producto);
     const p = { ...producto };
     this.setState({
       producto: p,
@@ -81,7 +111,6 @@ export class Productos extends Component {
   }
 
   agregarProducto = producto => {
-    console.log("Se agrega a la tabla: ", producto);
     const productos = [...this.state.productos];
     productos.push(producto);
     this.setState({ productos: productos });
@@ -96,34 +125,46 @@ export class Productos extends Component {
     p.precio = this.state.precio;
     p.codigoRubro = this.state.codigoRubro;
     p.codigoSubRubro = this.state.codigoSubRubro;
-    const producto = {
-      identificador: p.identificador,
-      rubro: {
-        codigo: this.state.codigoRubro,
-        descripcion: "",
-        habilitado: true
-      },
-      subRubro: {
-        codigo: this.state.codigoSubRubro,
-        descripcion: "",
-        rubro: {
-          codigo: this.state.codigoRubro,
-          descripcion: "",
-          habilitado: true
-        }
-      },
-      nombre: p.nombre,
-      marca: p.marca,
-      codigoBarras: p.codigoBarras,
-      precio: p.precio
-    };
-    console.log("producto a editar", producto);
     axios
       .put("http://localhost:8080/producto", p)
       .then(response => {
-        console.log(response);
+        this.notificationDOMRef.current.addNotification({
+          title: "Modificado",
+          message: `${response.data}`,
+          type: "success",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "zoomIn"],
+          animationOut: ["animated", "zoomOut"],
+          dismiss: { duration: 2000 },
+          dismissable: { click: true }
+        });
       })
-      .catch(error => console.log(error));
+      .then(() => {
+        let productos = [...this.state.productos];
+        // get producto to be update
+        const getProducto = productos.find(
+          producto => producto.identificador === p.identificador
+        );
+        console.log(getProducto);
+        // update object
+        productos.map(obj => getProducto || obj);
+        console.log(productos);
+        this.setState({ productos: productos });
+      })
+      .catch(error => {
+        this.notificationDOMRef.current.addNotification({
+          title: "Error",
+          message: `${error.message}`,
+          type: "error",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "zoomIn"],
+          animationOut: ["animated", "zoomOut"],
+          dismiss: { duration: 2000 },
+          dismissable: { click: true }
+        });
+      });
   };
 
   render() {
@@ -300,6 +341,7 @@ export class Productos extends Component {
     return (
       <div>
         <Navbar />
+        <ReactNotification ref={this.notificationDOMRef} />
         <div className="container mt-3">
           <div className="d-flex justify-content-between mb-3">
             <h2>Lista de productos</h2>

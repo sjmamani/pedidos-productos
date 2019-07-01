@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Tabla from "../UI/Tabla/Tabla";
+import Navbar from "../UI/Navbar/Navbar";
 
-const HEADERS = [
-  'Nro Cliente',
-  'Nombre',
-  'CUIT'
-]
+const HEADERS = ["Nro Cliente", "Nombre", "CUIT"];
 
 class Clientes extends Component {
   state = {
@@ -45,7 +42,12 @@ class Clientes extends Component {
       });
     }
     return (
-      <Tabla headers={HEADERS} contenido={clientes}/>
+      <div>
+        <Navbar />
+        <div className="container mt-3">
+          <Tabla headers={HEADERS} contenido={clientes} />
+        </div>
+      </div>
     );
   }
 }

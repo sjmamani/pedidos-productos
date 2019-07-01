@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import AgregarProductoEnPedido from "../AgregarProductoEnPedido/AgregarProductoEnPedido";
+import Navbar from "../../UI/Navbar/Navbar";
 
 class Pedido extends Component {
   state = {
@@ -84,65 +85,68 @@ class Pedido extends Component {
     }
     return (
       <div>
-        <Link
-          style={{ color: "#001932", fontWeight: "bold", fontSize: "1.5rem" }}
-          to="/pedidos"
-        >
-          Atrás
-        </Link>
-        <div className="d-flex mb-3">
-          <h3 className="mr-auto p-2">Detalle pedido</h3>
-          <button
-            className="btn btn-outline-danger align-self-center mr-2"
-            onClick={() => this.eliminarPedido(this.props.match.params.id)}
+        <Navbar />
+        <div className="container mt-3">
+          <Link
+            style={{ color: "#001932", fontWeight: "bold", fontSize: "1.5rem" }}
+            to="/pedidos"
           >
-            Eliminar
-          </button>
-          {facturar}
+            Atrás
+          </Link>
+          <div className="d-flex mb-3">
+            <h3 className="mr-auto p-2">Detalle pedido</h3>
+            <button
+              className="btn btn-outline-danger align-self-center mr-2"
+              onClick={() => this.eliminarPedido(this.props.match.params.id)}
+            >
+              Eliminar
+            </button>
+            {facturar}
+          </div>
+          <table className="table table-bordered">
+            <tbody>
+              <tr>
+                <td>Nro. de pedido</td>
+                <td>{this.props.match.params.id}</td>
+              </tr>
+              <tr>
+                <td>Nombre</td>
+                <td>{this.props.location.state.detalle.cliente.nombre}</td>
+              </tr>
+              <tr>
+                <td>CUIL</td>
+                <td>{this.props.location.state.detalle.cliente.cuil}</td>
+              </tr>
+              <tr>
+                <td>Estado</td>
+                <td>{this.state.estado}</td>
+              </tr>
+              <tr>
+                <td>Fecha</td>
+                <td>{this.props.location.state.detalle.fechaPedido}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="d-flex justify-content-between mb-3">
+            <h3>Lista de productos</h3>
+            {agregar}
+            <AgregarProductoEnPedido
+              numeroPedido={this.props.match.params.id}
+              metodo={this.agregarProducto}
+            />
+          </div>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio unitario</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio total</th>
+              </tr>
+            </thead>
+            {items}
+          </table>
         </div>
-        <table className="table table-bordered">
-          <tbody>
-            <tr>
-              <td>Nro. de pedido</td>
-              <td>{this.props.match.params.id}</td>
-            </tr>
-            <tr>
-              <td>Nombre</td>
-              <td>{this.props.location.state.detalle.cliente.nombre}</td>
-            </tr>
-            <tr>
-              <td>CUIL</td>
-              <td>{this.props.location.state.detalle.cliente.cuil}</td>
-            </tr>
-            <tr>
-              <td>Estado</td>
-              <td>{this.state.estado}</td>
-            </tr>
-            <tr>
-              <td>Fecha</td>
-              <td>{this.props.location.state.detalle.fechaPedido}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div className="d-flex justify-content-between mb-3">
-          <h3>Lista de productos</h3>
-          {agregar}
-          <AgregarProductoEnPedido
-            numeroPedido={this.props.match.params.id}
-            metodo={this.agregarProducto}
-          />
-        </div>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Producto</th>
-              <th scope="col">Precio unitario</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Precio total</th>
-            </tr>
-          </thead>
-          {items}
-        </table>
       </div>
     );
   }

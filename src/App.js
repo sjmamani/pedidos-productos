@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import Navbar from "./components/UI/Navbar/Navbar";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import Clientes from "./components/Clientes/Clientes";
 import Productos from "./components/Productos/Productos";
@@ -14,8 +13,6 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
-        <div className="container mt-3">
           <Route exact path="/" component={HomeLogin} />
           <Route path="/productos" component={Productos} />
           <Route path="/productos/:id" component={Producto} />
@@ -23,7 +20,6 @@ function App() {
           <Route path="/pedido/:id" component={Pedido} />
           <Route path="/clientes" component={Clientes} />
           <Route path="/cambioPassword" component={CambioPassword} />
-        </div>
       </Router>
     </div>
   );

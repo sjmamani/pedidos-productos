@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import AgregarProducto from "./AgregarProducto/AgregarProducto";
 import Tabla from "../UI/Tabla/Tabla";
+import Navbar from "../UI/Navbar/Navbar";
 
 const HEADERS = ["Nombre", "Marca", "Código", "Precio"];
 
@@ -50,7 +51,7 @@ export class Productos extends Component {
   }
 
   eliminarProducto(id) {
-    const producto = { identificador: id};
+    const producto = { identificador: id };
     console.log(producto);
     axios
       .delete("http://localhost:8080/producto", producto)
@@ -298,20 +299,23 @@ export class Productos extends Component {
 
     return (
       <div>
-        <div className="d-flex justify-content-between mb-3">
-          <h2>Lista de productos</h2>
-          <button
-            type="button"
-            className="btn btn-outline-primary"
-            data-toggle="modal"
-            data-target=".bd-example-modal-lg"
-          >
-            Agregar producto
-          </button>
-          <AgregarProducto push={this.agregarProducto} />
+        <Navbar />
+        <div className="container mt-3">
+          <div className="d-flex justify-content-between mb-3">
+            <h2>Lista de productos</h2>
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              data-toggle="modal"
+              data-target=".bd-example-modal-lg"
+            >
+              Agregar producto
+            </button>
+            <AgregarProducto push={this.agregarProducto} />
+          </div>
+          <Tabla headers={HEADERS} contenido={productos} />
+          {modal}
         </div>
-        <Tabla headers={HEADERS} contenido={productos} />
-        {modal}
       </div>
     );
   }

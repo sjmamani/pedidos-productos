@@ -3,6 +3,7 @@ import "./Pedidos.css";
 import axios from "axios";
 import Tabla from "../UI/Tabla/Tabla";
 import AgregarPedido from "./AgregarPedido/AgregarPedido";
+import Navbar from "../UI/Navbar/Navbar";
 
 const HEADERS = ["Nro. Pedido", "Cliente", "Estado", "Fecha"];
 
@@ -21,7 +22,7 @@ export class Pedidos extends Component {
       .then(response => {
         this.setState({
           pedidos: response.data.sort((a, b) => {
-            return a.numeroPedido - b.numeroPedido
+            return a.numeroPedido - b.numeroPedido;
           })
         });
         console.log(response.data);
@@ -74,19 +75,22 @@ export class Pedidos extends Component {
     }
     return (
       <div>
-        <div className="d-flex justify-content-between mb-3">
-          <h2>Lista de Pedidos</h2>
-          <button
-            type="button"
-            className="btn btn-outline-dark"
-            data-toggle="modal"
-            data-target=".bd-example-modal-lg"
-          >
-            Agregar pedido
-          </button>
-          <AgregarPedido push={this.agregarPedido} />
+        <Navbar />
+        <div className="container mt-3">
+          <div className="d-flex justify-content-between mb-3">
+            <h2>Lista de Pedidos</h2>
+            <button
+              type="button"
+              className="btn btn-outline-dark"
+              data-toggle="modal"
+              data-target=".bd-example-modal-lg"
+            >
+              Agregar pedido
+            </button>
+            <AgregarPedido push={this.agregarPedido} />
+          </div>
+          <Tabla headers={HEADERS} contenido={pedidos} />
         </div>
-        <Tabla headers={HEADERS} contenido={pedidos} />
       </div>
     );
   }

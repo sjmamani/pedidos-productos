@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Tabla from "../UI/Tabla/Tabla";
+import Navbar from "../UI/Navbar/Navbar";
+
+const HEADERS = ["Nro Cliente", "Nombre", "CUIT"];
 
 class Clientes extends Component {
   state = {
@@ -38,16 +42,12 @@ class Clientes extends Component {
       });
     }
     return (
-      <table className="table">
-        <thead style={{backgroundColor: "#001932", color: "#fff"}}>
-          <tr>
-            <th scope="col">Nro. Cliente</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">CUIT</th>
-          </tr>
-        </thead>
-        {clientes}
-      </table>
+      <div>
+        <Navbar />
+        <div className="container mt-3">
+          <Tabla headers={HEADERS} contenido={clientes} />
+        </div>
+      </div>
     );
   }
 }

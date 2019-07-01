@@ -1,17 +1,26 @@
 import React from "react";
 import axios from "axios";
-class RegisterBox extends React.Component {
+import { PasswordForm } from "./PasswordForm";
+import './Form.css' 
 
+class CambioPassword extends React.Component {
+    
     constructor(props) {
       super(props);
       this.state = {
         username: "",
         password: "",
+        passwordConfirm: "",
         errors:[],
         pwdState: null
       };
+      this.onUsernameChange = this.onUsernameChange.bind(this);
+      this.onPasswordChange = this.onPasswordChange.bind(this);
+      this.onPasswordConfirmChange = this.onPasswordConfirmChange.bind(this);
     }
   
+    
+
     showValidationErr(elm, msg) {
       this.setState((prevState) => ({
         errors: [
@@ -43,19 +52,17 @@ class RegisterBox extends React.Component {
       this.setState({username: e.target.value});
       this.clearValidationErr("username");
     }
-  
-    /**Evento password */
-    onPasswordChange(e) {
-      this.setState({password: e.target.value});
-      this.clearValidationErr("password");
-  
-      this.setState({pwdState: "weak"});
-      if (e.target.value.length > 8 && e.target.value.length<=12 ) {
-        this.setState({pwdState: "medium"});
-      } else if (e.target.value.length > 12) {
-        this.setState({pwdState: "strong"});
-      }
-  
+
+     /**Evento password */
+     onPasswordChange(pass) {
+      this.setState({password:pass});
+      this.clearValidationErr("password"); 
+     }
+
+      /**Evento password */
+    onPasswordConfirmChange(pass) {
+      this.setState({passwordConfirm: pass});
+      this.clearValidationErr("passwordConfirm"); 
     }
   
     /**Evento boton registrar */
@@ -71,6 +78,14 @@ class RegisterBox extends React.Component {
         this.showValidationErr("password", "Password Cannot be empty!");
         return;
       }
+      if (this.state.passwordConfirm === "") {
+        this.showValidationErr("passwordConfirm", "Password Confirmation Cannot be empty!");
+        return;
+      }
+      if (this.state.password !== this.state.passwordConfirm) {
+        this.showValidationErr("passwordConfirm", "Password Must be equals!");
+        return;
+      }
   
       /*Api call*/
       this.registrar();
@@ -84,18 +99,17 @@ class RegisterBox extends React.Component {
         'username' : this.state.username,
         'password' : this.state.password
       }
-      console.log(body);
-      
+
       axios
-          .post("http://localhost:8080/registrar/",body,{headers})
+          .post("http://localhost:8080/cambioPassword/",body,{headers})
           .then(response => {
-            this.setState({ registro: response.data, loading: false });
-            console.log(response.data);
-            alert("Se ha registrado el usuario");
+            alert("Cambio de password exitoso, redirigiendo a login");
+            //redirect
+            const { history } = this.props;
+            history.push("/")
           })
-          .catch(error => {
-            this.setState({ error: true, loading: false });
-            this.showValidationErr("password", "Ocurrio un error en el procedimiento: " + error.response.data["message"]);
+          .catch(error => {            
+            this.showValidationErr("passwordConfirm", "Ocurrio un error en el procedimiento: " + error.response.data["message"]);
             console.log(JSON.stringify(error.response.data));
           });
     }
@@ -103,7 +117,8 @@ class RegisterBox extends React.Component {
   
     render() {
       let usernameErr = null,
-        passwordErr = null;
+        passwordErr = null,
+        passwordConfirmErr = null;
   
       for (let err of this.state.errors) {
         if (err.elm === "username") {
@@ -112,27 +127,15 @@ class RegisterBox extends React.Component {
         if (err.elm === "password") {
           passwordErr = err.msg;
         }
-      }
-  
-      let pwdWeak = false,
-        pwdMedium = false,
-        pwdStrong = false;
-  
-      if (this.state.pwdState === "weak") {
-        pwdWeak = true;
-      } else if (this.state.pwdState === "medium") {
-        pwdWeak = true;
-        pwdMedium = true;
-      } else if (this.state.pwdState === "strong") {
-        pwdWeak = true;
-        pwdMedium = true;
-        pwdStrong = true;
+        if (err.elm === "passwordConfirm") {
+          passwordConfirmErr = err.msg;
+        }
       }
   
       return (
         <div className="inner-container">
           <div className="header">
-            Register
+            Cambio Password
           </div>
           <div className="box">
   
@@ -151,44 +154,30 @@ class RegisterBox extends React.Component {
                   : ""}</small>
             </div>
 
-            <div className="input-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                className="login-input"
-                placeholder="Password"
-                onChange={this
-                .onPasswordChange
-                .bind(this)}/>
+            <PasswordForm password={this.state.password} 
+                  label="Password"
+                  name= "password"
+                  onPasswordChange = {this.onPasswordChange}
+                  />
               <small className="danger-error">{passwordErr
                   ? passwordErr
                   : ""}</small>
-  
-              {this.state.password && <div className="password-state">
-                <div
-                  className={"pwd pwd-weak " + (pwdWeak
-                  ? "show"
-                  : "")}></div>
-                <div
-                  className={"pwd pwd-medium " + (pwdMedium
-                  ? "show"
-                  : "")}></div>
-                <div
-                  className={"pwd pwd-strong " + (pwdStrong
-                  ? "show"
-                  : "")}></div>
-              </div>}
-  
-            </div>
-  
+
+           <PasswordForm password={this.state.passwordConfirm} 
+                  label="Password Confirmation"
+                  name= "passwordConfirm"
+                  onPasswordChange = {this.onPasswordConfirmChange}
+                  />
+                   <small className="danger-error">{passwordConfirmErr
+                  ? passwordConfirmErr
+                  : ""}</small>
             <button
               type="button"
               className="login-btn"
               
               onClick={this
               .submitRegister
-              .bind(this)}>Register</button>
+              .bind(this)}>Actualizar contraseña</button>
   
           </div>
         </div>
@@ -199,4 +188,4 @@ class RegisterBox extends React.Component {
   
   }
 
-export default RegisterBox;
+export default CambioPassword;

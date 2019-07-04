@@ -159,7 +159,7 @@ class Login extends Component {
               </small>
             </div>
             <div className="forgotPassword">
-              <Link to="/cambioPassword">Olvidaste la contraseña?</Link>
+              <Link to="/cambioPassword">¿Olvidó la contraseña?</Link>
             </div>
             <button
               type="button"

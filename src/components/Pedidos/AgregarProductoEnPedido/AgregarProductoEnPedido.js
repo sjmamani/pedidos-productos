@@ -111,16 +111,6 @@ class AgregarProductoEnPedido extends Component {
             <div className="modal-body">
               <div className="form-group row">
                 <div className="col-6">
-                  <label>Rubro</label>
-                  <select
-                    className="custom-select"
-                    onChange={event => this.getProductosByRubro(event)}
-                  >
-                    <option defaultValue>Seleccionar Rubro</option>
-                    {rubros}
-                  </select>
-                </div>
-                <div className="col-6">
                   <label>Subrubro</label>
                   <select
                     className="custom-select"

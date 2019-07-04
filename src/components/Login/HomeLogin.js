@@ -7,9 +7,7 @@ import FadeTransition from "./transitions/FadeTransition";
 import RegisterBox from "./RegisterBox";
 import Login from "./Login";
 
-
 class HomeLogin extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -19,57 +17,50 @@ class HomeLogin extends React.Component {
   }
 
   showLogin() {
-    this.setState({isLoginOpen: true, isRegisterOpen: false});
+    this.setState({ isLoginOpen: true, isRegisterOpen: false });
   }
 
   showRegisterBox() {
-    this.setState({isRegisterOpen: true, isLoginOpen: false});
+    this.setState({ isRegisterOpen: true, isLoginOpen: false });
   }
 
   render() {
-
     return (
-      <div className="root-container">
-
+      <div className="root-container mt-5">
         <div className="box-controller">
           <div
-            className={"controller " + (this.state.isLoginOpen
-            ? "selected-controller"
-            : "")}
-            onClick={this
-            .showLogin
-            .bind(this)}>
+            className={
+              "controller " +
+              (this.state.isLoginOpen ? "selected-controller" : "")
+            }
+            onClick={this.showLogin.bind(this)}
+          >
             Login
           </div>
           <div
-            className={"controller " + (this.state.isRegisterOpen
-            ? "selected-controller"
-            : "")}
-            onClick={this
-            .showRegisterBox
-            .bind(this)}>
-            Register
+            className={
+              "controller " +
+              (this.state.isRegisterOpen ? "selected-controller" : "")
+            }
+            onClick={this.showRegisterBox.bind(this)}
+          >
+            Registrarse
           </div>
         </div>
- 
+
         <FadeTransition isOpen={this.state.isLoginOpen} duration={500}>
           <div className="box-container">
-            <Login history={this.props.history}/>
+            <Login history={this.props.history} />
           </div>
         </FadeTransition>
         <FadeTransition isOpen={this.state.isRegisterOpen} duration={500}>
           <div className="box-container">
-            <RegisterBox/>
+            <RegisterBox />
           </div>
         </FadeTransition>
-
       </div>
     );
-
   }
-
 }
-
-
 
 export default HomeLogin;

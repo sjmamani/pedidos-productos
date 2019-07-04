@@ -130,7 +130,7 @@ export class Productos extends Component {
       .then(response => {
         this.notificationDOMRef.current.addNotification({
           title: "Modificado",
-          message: `${response.data}`,
+          message: `Producto modificado con éxito`,
           type: "success",
           insert: "top",
           container: "top-center",
@@ -146,10 +146,9 @@ export class Productos extends Component {
         const getProducto = productos.find(
           producto => producto.identificador === p.identificador
         );
-        console.log(getProducto);
+        getProducto.precio = p.precio;
         // update object
-        productos.map(obj => getProducto || obj);
-        console.log(productos);
+        productos.map(obj => p );
         this.setState({ productos: productos });
       })
       .catch(error => {

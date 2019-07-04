@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import axios from "axios";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class AgregarPedido extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cuit: "",
-      resultado: null,
-      error: false
+      resultado: null
     };
     this.setCuitHandler = this.setCuitHandler.bind(this);
+    this.notificationDOMRef = React.createRef();
   }
 
   setCuitHandler(event) {
@@ -20,20 +22,38 @@ class AgregarPedido extends Component {
     axios
       .post(`http://localhost:8080/pedido/${this.state.cuit}`)
       .then(response => {
-        console.log(response);
         this.setState({ resultado: response.data });
         this.agregarEnTabla(response.data);
       })
       .catch(error => {
-        console.log(error);
-        alert("No existe cliente para el CUIT ingresado.")
-        this.setState({ error: true });
+        this.notificationDOMRef.current.addNotification({
+          title: "Error",
+          message: `No existe cliente con el CUIT ingresado`,
+          type: "danger",
+          insert: "top",
+          container: "top-center",
+          animationIn: ["animated", "zoomIn"],
+          animationOut: ["animated", "zoomOut"],
+          dismiss: { duration: 2000 },
+          dismissable: { click: true }
+        });
       });
   };
 
   agregarEnTabla(pedido) {
-    this.setState({cuit: ""});
+    this.setState({ cuit: "" });
     this.props.push(pedido);
+    this.notificationDOMRef.current.addNotification({
+      title: "Agregado",
+      message: `Se agregó el pedido`,
+      type: "success",
+      insert: "top",
+      container: "top-center",
+      animationIn: ["animated", "zoomIn"],
+      animationOut: ["animated", "zoomOut"],
+      dismiss: { duration: 2000 },
+      dismissable: { click: true }
+    });
   }
   render() {
     return (
@@ -45,6 +65,7 @@ class AgregarPedido extends Component {
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
+        <ReactNotification ref={this.notificationDOMRef} />
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-body">
@@ -72,7 +93,7 @@ class AgregarPedido extends Component {
               <button
                 type="button"
                 className="btn btn-primary"
-                data-dismiss="modal"
+                // data-dismiss="modal"
                 onClick={this.agregarPedido}
               >
                 Crear

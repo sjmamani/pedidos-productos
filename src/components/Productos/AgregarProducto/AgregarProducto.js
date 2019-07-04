@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 class AgregarProducto extends Component {
   constructor(props) {
@@ -15,8 +17,8 @@ class AgregarProducto extends Component {
       codigoRubro: 0,
       codigoSubRubro: 0
     };
+    this.notificationDOMRef = React.createRef();
   }
-  // this.setNombreHandler = this.setNombreHandler.bind(this);
 
   componentDidMount() {
     axios
@@ -58,19 +60,40 @@ class AgregarProducto extends Component {
       codigoBarras: this.state.codigoBarras,
       precio: this.state.precio
     }
-    console.log(producto);
     axios.post("http://localhost:8080/producto", producto)
     .then(response => {
       console.log(response);
       this.agregarEnTabla(response.data);
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      this.notificationDOMRef.current.addNotification({
+        title: "Error",
+        message: `${error.message}`,
+        type: "error",
+        insert: "top",
+        container: "top-center",
+        animationIn: ["animated", "zoomIn"],
+        animationOut: ["animated", "zoomOut"],
+        dismiss: { duration: 2000 },
+        dismissable: { click: true }
+      });
+    });
   };
 
   agregarEnTabla(producto) {
     this.setState({nombre: "", marca: "", codigoBarras: "", precio: 0, codigoSubRubro: 0, codigoRubro: 0});
     this.props.push(producto);
-    alert("Producto agregado con éxito");
+    this.notificationDOMRef.current.addNotification({
+      title: "Producto Agregado",
+      message: `Se ha agregado el producto`,
+      type: "success",
+      insert: "top",
+      container: "top-center",
+      animationIn: ["animated", "zoomIn"],
+      animationOut: ["animated", "zoomOut"],
+      dismiss: { duration: 2000 },
+      dismissable: { click: true }
+    });
   }
 
   render() {
@@ -103,6 +126,7 @@ class AgregarProducto extends Component {
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
+        <ReactNotification ref={this.notificationDOMRef} />
         <div className="modal-dialog modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-body">
@@ -183,7 +207,7 @@ class AgregarProducto extends Component {
               <button
                 type="button"
                 className="btn btn-primary"
-                data-dismiss="modal"
+                // data-dismiss="modal"
                 onClick={this.agregarProducto}
               >
                 Crear
